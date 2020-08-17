@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On-call</title>
+</head>
+<body>
+  <form>
+    <input type="checkbox" id="on-call" disabled>
+    <label for="on-call">Currently on a call</label>
+  </form>
+  <button id="login">Login</button>
+
+  <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-firestore.js"></script>
+
+  <script type="module">
+    const checkbox = document.getElementById('on-call')
+    const loginButton = document.getElementById('login')
+
+    const FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyCHrUsACOmSWlRSLoGWacDbzCET5wmhF7U',
+      authDomain: 'on-call-bb9a9.firebaseapp.com',
+      databaseURL: 'https://on-call-bb9a9.firebaseio.com',
+      projectId: 'on-call-bb9a9',
+      storageBucket: 'on-call-bb9a9.appspot.com',
+      messagingSenderId: '82179134279',
+
+      appId: '1:82179134279:web:05fbe7ae2782b58eb2b262'
+    }
+
+    firebase.initializeApp(FIREBASE_CONFIG)
+    const auth = firebase.auth()
+
+    const provider = new firebase.auth.GoogleAuthProvider()
+    export const signInWithGoogle = () => auth.signInWithPopup(provider)
+
+    loginButton.addEventListener('click', () =>  auth.signInWithPopup(provider))
+
+    auth.onAuthStateChanged(user => {
+      if (user && user.email === 'ejzimmer@gmail.com') {
+        checkbox.disabled = false
+      }
+    })
+
+    const ref = firebase.firestore().collection('on-call').doc('current')
+    ref.onSnapshot(value => checkbox.checked = value.data().value)
+
+    checkbox.addEventListener('change', () => {
+      ref.set({ value: checkbox.checked})
+    })
+  </script>
+</body>
+</html>
