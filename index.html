@@ -34,11 +34,19 @@
     .light {
       width: 200px;
       height: 300px;
-      border: 8px solid currentColor;
+      border: 8px solid #777;
       margin-bottom: 15px;
+      border-radius: 50px;
+      background-color: hsl(0, 0%, 100%, .2);
+      transition: all .2s;
     }
     input:checked + label > .light {
-      background-color: red;
+      background:
+        linear-gradient(hsl(5, 100%, 30%), transparent 10%, transparent 90%, hsl(5, 100%, 30%)),
+        linear-gradient(to left, hsl(5, 100%, 30%), hsl(5, 100%, 70%) 20%, hsl(5, 100%, 70%) 80%, hsl(5, 100%, 30%));
+    }
+    input:not(:checked) + label > .text {
+      color: #555;
     }
 
     button {
@@ -60,7 +68,7 @@
     <input type="checkbox" id="on-call" disabled>
     <label for="on-call">
       <div class="light"></div>
-      on air
+      <div class="text">on air</div>
     </label>
   </form>
   <button id="login">Login</button>
